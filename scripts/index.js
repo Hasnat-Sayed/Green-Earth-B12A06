@@ -28,7 +28,7 @@ const displayCategory = (categories) => {
     for (let category of categories) {
         const btnDiv = document.createElement("div");
         btnDiv.innerHTML =
-            `<button id="category-btn-${category.id}" onclick="loadTrees('${category.id}')" class="btn w-full bg-[#f0fDf4] border-none hover:bg-[#CFF0DC] text-left justify-start category-btn">
+            `<button id="category-btn-${category.id}" onclick="loadTrees('${category.id}')" class="btn w-full bg-[#f0fDf4] border-none hover:bg-[#CFF0DC] text-center md:justify-start md:text-left category-btn">
                 ${category.category_name}
             </button>`;
 
@@ -100,14 +100,42 @@ const displayTrees = (trees) => {
 								<p class="text-xs font-normal text-[#1F2937] my-2">${tree.description}</p>
 							</div>
 							<div class="card-price-tag flex items-center justify-between mb-3">
-								<p class="text-sm  font-semibold text-[#15803D] px-3 py-1 bg-[#DCFCE7] rounded-full">${tree.category}</p>
-								<p class="text-sm font-semibold">৳${tree.price}</p>
+								<p class="text-sm font-medium text-[#15803D] px-3 py-1 bg-[#DCFCE7] rounded-full">${tree.category}</p>
+								<p class="text-sm font-semibold">৳<span>${tree.price}</p>
 							</div>
 							<div class="card-button">
-								<button class="text-base font-semibold text-white bg-[#15803D] py-2 px-3 w-full rounded-full cursor-pointer">Add to Cart</button>
+								<button class="text-base font-medium text-white bg-[#15803D] py-2 px-3 w-full rounded-full cursor-pointer">Add to Cart</button>
 							</div>
 						</div>`;
         treeContainer.append(card);
     });
     manageSpinner(false)
+};
+
+//modal load and display
+const loadTreeDetail = async (id) => {
+    const url = `https://openapi.programming-hero.com/api/plant/${id}`;
+    const res = await fetch(url);
+    const details = await res.json();
+    displayTreeDetails(details.plants);
+}
+
+const displayTreeDetails = (plant) => {
+    
+    const detailsBox = document.getElementById("details-container");
+    detailsBox.innerHTML = `
+        <h2 class="text-2xl font-bold">
+            ${plant.name} 
+        </h2>
+        
+        <img src="${plant.image}" class="w-full max-h-72 object-cover rounded-lg" alt="">
+      
+        <h2 class="font-bold">Category: <span class="font-normal"> ${plant.category}</span></h2>
+    
+        <h2 class="font-bold">Price: <span class="font-normal">৳${plant.price}</span></h2>
+        <h2 class="font-bold">Description: <span class="font-normal">${plant.description}</span></h2> 
+    
+    `
+    ;
+    document.getElementById("detail_modal").showModal();
 };
