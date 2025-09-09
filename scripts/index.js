@@ -21,7 +21,7 @@ const loadCategory = () => {
 };
 
 const displayCategory = (categories) => {
-    console.log(categories)
+    
     const catContainer = document.getElementById("category-container");
     catContainer.innerHTML = "";
  
@@ -104,7 +104,7 @@ const displayTrees = (trees) => {
 								<p class="text-sm font-semibold">৳<span>${tree.price}</p>
 							</div>
 							<div class="card-button">
-								<button class="text-base font-medium text-white bg-[#15803D] py-2 px-3 w-full rounded-full cursor-pointer">Add to Cart</button>
+								<button class="text-base font-medium text-white bg-[#15803D] py-2 px-3 w-full rounded-full cursor-pointer hover:bg-green-800 active:scale-95 transition-all duration-75 ease-in-out">Add to Cart</button>
 							</div>
 						</div>`;
         treeContainer.append(card);
@@ -139,3 +139,50 @@ const displayTreeDetails = (plant) => {
     ;
     document.getElementById("detail_modal").showModal();
 };
+
+
+//cart functionalities
+
+document.getElementById("card-container").addEventListener("click", (event) => {
+
+    if (event.target.closest(".card-button")) {
+        let addBtn = event.target.closest(".card-button");
+        
+        
+        let cartPrice = Number(document.getElementById("total-amount").innerText);
+        
+        let productPrice = Number(addBtn.parentNode.children[3].children[1].children[0].innerText);
+        
+        let treeName = addBtn.parentNode.children[1].children[0].innerText;
+        
+        let totalPrice = productPrice + cartPrice;
+        document.getElementById("total-amount").innerText = totalPrice;
+
+        let singleCartContainer = document.getElementById("cart-divs");
+        singleCartContainer.innerHTML += `
+                        <div class="single-cart bg-[#F0FDF4] flex items-center justify-between p-2 rounded-lg my-3">
+							<div class="single-cart-content">
+								<h1 class="font-semibold text-[#1F2937] mb-2">${treeName}</h1>
+								<p class="font-normal text-[#1F2937]">৳<span>${productPrice}</span> x 1</p>
+							</div>
+							<div class="single-cart-icon">
+								<i  class="fa-solid fa-x text-[#8C8C8C] cursor-pointer"></i>
+							</div>
+						</div>
+        `
+    };
+})
+
+document.getElementById("cart-divs").addEventListener("click", (event) => {
+    if(event.target.closest(".single-cart-icon")){
+        const crossBtn = event.target.closest(".single-cart-icon")
+        const price = Number(crossBtn.parentNode.children[0].children[1].children[0].innerText)
+        
+        const totalPrice = Number(document.getElementById("total-amount").innerText)
+        
+        const newTotal = totalPrice - price
+        document.getElementById("total-amount").innerText = newTotal;
+
+        crossBtn.parentNode.remove()
+    }
+})
