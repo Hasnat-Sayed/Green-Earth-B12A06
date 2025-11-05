@@ -1,3 +1,10 @@
+## 🚀 Live Link
+
+Check out the live version of the project here:  
+👉 [**View Live Site**](https://green-earth2099.netlify.app/) 
+
+---
+
 #### 1) What is the difference between var, let, and const?
 **Answer:** Difference between var, let and const:
 
